@@ -1,0 +1,60 @@
+>>> from vocab import Vocabulary
+>>> import evaluation
+>>> evaluation.evalrank('runs/f30k_scan/i2t_avg/model_best.pth.tar', data_path='data', split='test')
+Namespace(agg_func='Mean', batch_size=128, bi_gru=True, cross_attn='i2t', data_name='f30k_precomp', data_path='data', embed_size=1024, grad_clip=2.0, img_dim=2048, lambda_lse=6.0, lambda_softmax=4.0, learning_rate=0.0002, log_step=10, logger_name='runs/f30k_scan/i2t', lr_update=15, margin=0.2, max_violation=True, model_name='runs/f30k_scan/i2t_avg', no_imgnorm=False, no_txtnorm=False, num_epochs=30, num_layers=1, precomp_enc_type='basic', raw_feature_norm='clipped_l2norm', resume='', val_step=500, vocab_path='vocab', vocab_size=8481, word_dim=300, workers=10)
+Loading dataset
+Computing results...
+model.py:220: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  attn = nn.Softmax()(attn*smooth)
+Test: [0/40]    Le 59.9929 (59.9929)    Time 3.229 (0.000)
+Test: [10/40]   Le 59.0212 (59.1149)    Time 0.367 (0.000)
+Test: [20/40]   Le 58.3524 (58.9622)    Time 0.362 (0.000)
+Test: [30/40]   Le 60.4107 (59.0716)    Time 0.408 (0.000)
+Images: 1000, Captions: 5000
+>> shard_xattn_i2t batch (7,39)
+calculate similarity time: 426.611537933
+rsum: 451.1
+Average i2t Recall: 83.0
+Image to text: 66.4 88.6 94.0 1.0 4.5
+Average t2i Recall: 67.4
+Text to image: 44.6 74.3 83.2 2.0 12.3
+
+>>> from vocab import Vocabulary
+import evaluation>>> import evaluation
+>>> evaluation.evalrank("runs/f30k_scan/t2i_avg/model_best.pth.tar", data_path="data", split="test")
+Namespace(agg_func='Mean', batch_size=128, bi_gru=True, cross_attn='t2i', data_name='f30k_precomp', data_path='data', embed_size=1024, grad_clip=2.0, img_dim=2048, lambda_lse=6.0, lambda_softmax=9.0, learning_rate=0.0002, log_step=10, logger_name='runs/f30k_scan/t2i_avg', lr_update=15, margin=0.2, max_violation=True, model_name='runs/f30k_scan/t2i_avg', no_imgnorm=False, no_txtnorm=False, num_epochs=30, num_layers=1, precomp_enc_type='basic', raw_feature_norm='clipped_l2norm', resume='', val_step=500, vocab_path='vocab', vocab_size=8481, word_dim=300, workers=10)
+Loading dataset
+Computing results...
+model.py:220: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  attn = nn.Softmax()(attn*smooth)
+Test: [0/40]    Le 62.9730 (62.9730)    Time 2.466 (0.000)
+Test: [10/40]   Le 62.6260 (62.1837)    Time 0.322 (0.000)
+Test: [20/40]   Le 60.3270 (61.9477)    Time 0.279 (0.000)
+Test: [30/40]   Le 60.8042 (62.0694)    Time 0.353 (0.000)
+Images: 1000, Captions: 5000
+>> shard_xattn_t2i batch (7,39)
+calculate similarity time: 489.723583937
+rsum: 448.4
+Average i2t Recall: 81.9
+Image to text: 64.6 87.8 93.3 1.0 4.8
+Average t2i Recall: 67.6
+Text to image: 46.1 74.0 82.6 2.0 13.8
+
+>>> evaluation.evalrank('runs/f30k_scan/i2t_avg/model_best.pth.tar', data_path='data', split='test', data_name='f30k_ori')
+Namespace(agg_func='Mean', batch_size=128, bi_gru=True, cross_attn='i2t', data_name='f30k_precomp', data_path='data', embed_size=1024, grad_clip=2.0, img_dim=2048, lambda_lse=6.0, lambda_softmax=4.0, learning_rate=0.0002, log_step=10, logger_name='runs/f30k_scan/i2t', lr_update=15, margin=0.2, max_violation=True, model_name='runs/f30k_scan/i2t_avg', no_imgnorm=False, no_txtnorm=False, num_epochs=30, num_layers=1, precomp_enc_type='basic', raw_feature_norm='clipped_l2norm', resume='', val_step=500, vocab_path='vocab', vocab_size=8481, word_dim=300, workers=10)
+Loading dataset
+Computing results...
+model.py:220: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  attn = nn.Softmax()(attn*smooth)
+Test: [0/40]    Le 59.9948 (59.9948)    Time 3.876 (0.000)
+Test: [10/40]   Le 59.0253 (59.1185)    Time 2.232 (0.000)
+Test: [20/40]   Le 58.3561 (58.9592)    Time 1.939 (0.000)
+Test: [30/40]   Le 60.4192 (59.0662)    Time 1.940 (0.000)
+Images: 1000, Captions: 5000
+>> shard_xattn_i2t batch (7,39)
+calculate similarity time: 2197.21204615
+rsum: 450.8
+Average i2t Recall: 82.9
+Image to text: 66.1 88.5 94.0 1.0 4.5
+Average t2i Recall: 67.4
+Text to image: 44.6 74.4 83.2 2.0 12.3
