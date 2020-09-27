@@ -124,3 +124,65 @@ def get_test_loader(split_name, data_name, vocab, batch_size,
     test_loader = get_precomp_loader(dpath, split_name, vocab, opt,
                                      batch_size, False, workers)
     return test_loader
+
+
+class COCOTrainPrecompDataset(data.Dataset):
+    """
+    Load precomputed captions and image features
+    Possible options: f30k_precomp, coco_precomp
+    """
+
+    def __init__(self, data_path, vocab):
+        self.vocab = vocab
+
+        # Captions
+        self.captions = []
+        with open(os.path.join(data_path, 'train_caps.txt'), 'rb') as f:
+            for line in f:
+                self.captions.append(line.strip())
+
+        # Image features
+        self.feat_dir = os.path.join(data_path, 'feats')
+        self.length = len(self.captions)
+
+    def __getitem__(self, index):
+        # handle the image redundancy
+        img_id = index
+        image = torch.Tensor(np.load(os.path.join(self.feat_dir, '%s.npy' % img_id)))
+        caption = self.captions[index]
+        vocab = self.vocab
+
+        # Convert caption (string) to word ids.
+        tokens = nltk.tokenize.word_tokenize(
+            str(caption).lower().decode('utf-8'))
+        caption = []
+        caption.append(vocab('<start>'))
+        caption.extend([vocab(token) for token in tokens])
+        caption.append(vocab('<end>'))
+        target = torch.Tensor(caption)
+        return image, target, index, img_id
+
+    def __len__(self):
+        return self.length
+
+
+def get_coco_loaders(data_name, vocab, batch_size, workers, opt):
+    dpath = os.path.join(opt.data_path, data_name)
+    train_loader = get_coco_train_loader(dpath, vocab, opt,
+                                      batch_size, True, workers)
+    val_loader = get_precomp_loader(dpath, 'dev', vocab, opt,
+                                    batch_size, False, workers)
+    return train_loader, val_loader
+
+
+def get_coco_train_loader(data_path, vocab, opt, batch_size=100,
+                       shuffle=True, num_workers=2):
+    """Returns torch.utils.data.DataLoader for custom coco dataset."""
+    dset = COCOTrainPrecompDataset(data_path, vocab)
+
+    data_loader = torch.utils.data.DataLoader(dataset=dset,
+                                              batch_size=batch_size,
+                                              shuffle=shuffle,
+                                              pin_memory=True,
+                                              collate_fn=collate_fn)
+    return data_loader

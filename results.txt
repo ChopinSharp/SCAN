@@ -1,3 +1,5 @@
+# Original SCAN model with original feature
+
 >>> from vocab import Vocabulary
 >>> import evaluation
 >>> evaluation.evalrank('runs/f30k_scan/i2t_avg/model_best.pth.tar', data_path='data', split='test')
@@ -40,6 +42,9 @@ Image to text: 64.6 87.8 93.3 1.0 4.8
 Average t2i Recall: 67.6
 Text to image: 46.1 74.0 82.6 2.0 13.8
 
+
+# Original SCAN model with BUA-36 feature
+
 >>> evaluation.evalrank('runs/f30k_scan/i2t_avg/model_best.pth.tar', data_path='data', split='test', data_name='f30k_ori')
 Namespace(agg_func='Mean', batch_size=128, bi_gru=True, cross_attn='i2t', data_name='f30k_precomp', data_path='data', embed_size=1024, grad_clip=2.0, img_dim=2048, lambda_lse=6.0, lambda_softmax=4.0, learning_rate=0.0002, log_step=10, logger_name='runs/f30k_scan/i2t', lr_update=15, margin=0.2, max_violation=True, model_name='runs/f30k_scan/i2t_avg', no_imgnorm=False, no_txtnorm=False, num_epochs=30, num_layers=1, precomp_enc_type='basic', raw_feature_norm='clipped_l2norm', resume='', val_step=500, vocab_path='vocab', vocab_size=8481, word_dim=300, workers=10)
 Loading dataset
@@ -58,3 +63,139 @@ Average i2t Recall: 82.9
 Image to text: 66.1 88.5 94.0 1.0 4.5
 Average t2i Recall: 67.4
 Text to image: 44.6 74.4 83.2 2.0 12.3
+
+>>> evaluation.evalrank('runs/f30k_scan/t2i_avg/model_best.pth.tar', data_path='data', split='test', data_name='f30k_ori')
+Namespace(agg_func='Mean', batch_size=128, bi_gru=True, cross_attn='t2i', data_name='f30k_precomp', data_path='data', embed_size=1024, grad_clip=2.0, img_dim=2048, lambda_lse=6.0, lambda_softmax=9.0, learning_rate=0.0002, log_step=10, logger_name='runs/f30k_scan/t2i_avg', lr_update=15, margin=0.2, max_violation=True, model_name='runs/f30k_scan/t2i_avg', no_imgnorm=False, no_txtnorm=False, num_epochs=30, num_layers=1, precomp_enc_type='basic', raw_feature_norm='clipped_l2norm', resume='', val_step=500, vocab_path='vocab', vocab_size=8481, word_dim=300, workers=10)
+Loading dataset
+Computing results...
+Test: [0/40]    Le 62.9749 (62.9749)    Time 1.399 (0.000)
+Test: [10/40]   Le 62.6194 (62.1998)    Time 0.183 (0.000)
+Test: [20/40]   Le 60.3300 (61.9509)    Time 0.185 (0.000)
+Test: [30/40]   Le 60.8007 (62.0673)    Time 0.227 (0.000)
+Images: 1000, Captions: 5000
+>> shard_xattn_t2i batch (7,39)
+calculate similarity time: 1195.38408399
+rsum: 448.6
+Average i2t Recall: 82.0
+Image to text: 64.6 87.9 93.4 1.0 4.8
+Average t2i Recall: 67.6
+Text to image: 46.0 74.1 82.5 2.0 13.8
+
+
+# Original SCAN model with re-ranked BUA-36 feature
+
+>>> evaluation.evalrank('runs/f30k_scan/i2t_avg/model_best.pth.tar', data_path='data', split='test', data_name='0905225706')
+Namespace(agg_func='Mean', batch_size=128, bi_gru=True, cross_attn='i2t', data_name='f30k_precomp', data_path='data', embed_size=1024, grad_clip=2.0, img_dim=2048, lambda_lse=6.0, lambda_softmax=4.0, learning_rate=0.0002, log_step=10, logger_name='runs/f30k_scan/i2t', lr_update=15, margin=0.2, max_violation=True, model_name='runs/f30k_scan/i2t_avg', no_imgnorm=False, no_txtnorm=False, num_epochs=30, num_layers=1, precomp_enc_type='basic', raw_feature_norm='clipped_l2norm', resume='', val_step=500, vocab_path='vocab', vocab_size=8481, word_dim=300, workers=10)
+Loading dataset
+Computing results...
+model.py:220: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  attn = nn.Softmax()(attn*smooth)
+Test: [0/40]    Le 60.7214 (60.7214)    Time 2.021 (0.000)
+Test: [10/40]   Le 59.8660 (60.4574)    Time 0.284 (0.000)
+Test: [20/40]   Le 59.5632 (60.2887)    Time 0.269 (0.000)
+Test: [30/40]   Le 62.0533 (60.4640)    Time 0.302 (0.000)
+Images: 1000, Captions: 5000
+>> shard_xattn_i2t batch (7,39)
+calculate similarity time: 462.093118906
+rsum: 454.7
+Average i2t Recall: 83.9
+Image to text: 67.5 90.4 93.7 1.0 4.6
+Average t2i Recall: 67.7
+Text to image: 45.7 74.2 83.2 2.0 12.9
+
+>>> evaluation.evalrank('runs/f30k_scan/t2i_avg/model_best.pth.tar', data_path='data', split='test', data_name='0905225706')
+Namespace(agg_func='Mean', batch_size=128, bi_gru=True, cross_attn='t2i', data_name='f30k_precomp', data_path='data', embed_size=1024, grad_clip=2.0, img_dim=2048, lambda_lse=6.0, lambda_softmax=9.0, learning_rate=0.0002, log_step=10, logger_name='runs/f30k_scan/t2i_avg', lr_update=15, margin=0.2, max_violation=True, model_name='runs/f30k_scan/t2i_avg', no_imgnorm=False, no_txtnorm=False, num_epochs=30, num_layers=1, precomp_enc_type='basic', raw_feature_norm='clipped_l2norm', resume='', val_step=500, vocab_path='vocab', vocab_size=8481, word_dim=300, workers=10)
+Loading dataset
+Computing results...
+Test: [0/40]    Le 61.9820 (61.9819)    Time 2.457 (0.000)
+Test: [10/40]   Le 62.4894 (62.3656)    Time 0.366 (0.000)
+Test: [20/40]   Le 61.2473 (62.1495)    Time 0.343 (0.000)
+Test: [30/40]   Le 61.8290 (62.4433)    Time 0.401 (0.000)
+Images: 1000, Captions: 5000
+>> shard_xattn_t2i batch (7,39)
+calculate similarity time: 1191.45262003
+rsum: 448.9
+Average i2t Recall: 81.9
+Image to text: 63.9 87.8 93.9 1.0 4.3
+Average t2i Recall: 67.8
+Text to image: 46.3 74.6 82.4 2.0 13.9
+
+
+# Original SCAN model with BUA-10 feature
+
+>>> evaluation.evalrank('runs/f30k_scan/i2t_avg/model_best.pth.tar', data_path='data', split='test', data_name='f30k_10')
+Namespace(agg_func='Mean', batch_size=128, bi_gru=True, cross_attn='i2t', data_name='f30k_precomp', data_path='data', embed_size=1024, grad_clip=2.0, img_dim=2048, lambda_lse=6.0, lambda_softmax=4.0, learning_rate=0.0002, log_step=10, logger_name='runs/f30k_scan/i2t', lr_update=15, margin=0.2, max_violation=True, model_name='runs/f30k_scan/i2t_avg', no_imgnorm=False, no_txtnorm=False, num_epochs=30, num_layers=1, precomp_enc_type='basic', raw_feature_norm='clipped_l2norm', resume='', val_step=500, vocab_path='vocab', vocab_size=8481, word_dim=300, workers=10)
+Loading dataset
+Computing results...
+Test: [0/40]    Le 60.0992 (60.0992)    Time 0.945 (0.000)
+Test: [10/40]   Le 60.5327 (60.6330)    Time 0.120 (0.000)
+Test: [20/40]   Le 60.6018 (60.2577)    Time 0.106 (0.000)
+Test: [30/40]   Le 61.6917 (60.5614)    Time 0.133 (0.000)
+Images: 1000, Captions: 5000
+>> shard_xattn_i2t batch (7,39)
+calculate similarity time: 432.068361044
+rsum: 418.5
+Average i2t Recall: 77.0
+Image to text: 57.8 83.1 90.1 1.0 7.3
+Average t2i Recall: 62.5
+Text to image: 40.8 68.6 78.1 2.0 17.0
+
+>>> evaluation.evalrank('runs/f30k_scan/t2i_avg/model_best.pth.tar', data_path='
+data', split='test', data_name='f30k_10')
+Namespace(agg_func='Mean', batch_size=128, bi_gru=True, cross_attn='t2i', data_name='f30k_precomp', data_path='data', embed_size=1024, grad_clip=2.0, img_dim=2048, lambda_lse=6.0, lambda_softmax=9.0, learning_rate=0.0002, log_step=10, logger_name='runs/f30k_scan/t2i_avg', lr_update=15, margin=0.2, max_violation=True, model_name='runs/f30k_scan/t2i_avg', no_imgnorm=False, no_txtnorm=False, num_epochs=30, num_layers=1, precomp_enc_type='basic', raw_feature_norm='clipped_l2norm', resume='', val_step=500, vocab_path='vocab', vocab_size=8481, word_dim=300, workers=10)
+Loading dataset
+Computing results...
+Test: [0/40]    Le 62.5147 (62.5147)    Time 0.977 (0.000)
+Test: [10/40]   Le 62.6899 (62.6816)    Time 0.158 (0.000)
+Test: [20/40]   Le 62.4220 (62.3001)    Time 0.146 (0.000)
+Test: [30/40]   Le 62.3702 (62.6778)    Time 0.182 (0.000)
+Images: 1000, Captions: 5000
+>> shard_xattn_t2i batch (7,39)
+calculate similarity time: 794.303162098
+rsum: 397.7
+Average i2t Recall: 72.4
+Image to text: 51.9 79.5 85.9 1.0 8.9
+Average t2i Recall: 60.1
+Text to image: 38.7 66.0 75.6 2.0 20.7
+
+
+# Original SCAN model with re-ranked BUA-10 feature
+
+>>> evaluation.evalrank('runs/f30k_scan/i2t_avg/model_best.pth.tar', data_path='data', split='test', data_name='0905225706_10')
+Namespace(agg_func='Mean', batch_size=128, bi_gru=True, cross_attn='i2t', data_name='f30k_precomp', data_path='data', embed_size=1024, grad_clip=2.0, img_dim=2048, lambda_lse=6.0, lambda_softmax=4.0, learning_rate=0.0002, log_step=10, logger_name='runs/f30k_scan/i2t', lr_update=15, margin=0.2, max_violation=True, model_name='runs/f30k_scan/i2t_avg', no_imgnorm=False, no_txtnorm=False, num_epochs=30, num_layers=1, precomp_enc_type='basic', raw_feature_norm='clipped_l2norm', resume='', val_step=500, vocab_path='vocab', vocab_size=8481, word_dim=300, workers=10)
+Loading dataset
+Computing results...
+model.py:220: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  attn = nn.Softmax()(attn*smooth)
+Test: [0/40]    Le 63.1762 (63.1761)    Time 1.171 (0.000)
+Test: [10/40]   Le 61.1825 (61.9184)    Time 0.160 (0.000)
+Test: [20/40]   Le 60.7198 (61.7161)    Time 0.109 (0.000)
+Test: [30/40]   Le 62.8192 (61.9161)    Time 0.133 (0.000)
+Images: 1000, Captions: 5000
+>> shard_xattn_i2t batch (7,39)
+calculate similarity time: 393.127672911
+rsum: 437.5
+Average i2t Recall: 81.3
+Image to text: 65.4 86.6 91.9 1.0 7.0
+Average t2i Recall: 64.5
+Text to image: 42.9 71.0 79.7 2.0 15.4
+
+>>> evaluation.evalrank('runs/f30k_scan/t2i_avg/model_best.pth.tar', data_path='data', split='test', data_name='0905225706_10')
+Namespace(agg_func='Mean', batch_size=128, bi_gru=True, cross_attn='t2i', data_name='f30k_precomp', data_path='data', embed_size=1024, grad_clip=2.0, img_dim=2048, lambda_lse=6.0, lambda_softmax=9.0, learning_rate=0.0002, log_step=10, logger_name='runs/f30k_scan/t2i_avg', lr_update=15, margin=0.2, max_violation=True, model_name='runs/f30k_scan/t2i_avg', no_imgnorm=False, no_txtnorm=False, num_epochs=30, num_layers=1, precomp_enc_type='basic', raw_feature_norm='clipped_l2norm', resume='', val_step=500, vocab_path='vocab', vocab_size=8481, word_dim=300, workers=10)
+Loading dataset
+Computing results...
+model.py:220: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  attn = nn.Softmax()(attn*smooth)
+Test: [0/40]    Le 63.6875 (63.6875)    Time 1.725 (0.000)
+Test: [10/40]   Le 60.7725 (62.7833)    Time 0.277 (0.000)
+Test: [20/40]   Le 61.4933 (62.6699)    Time 0.253 (0.000)
+Test: [30/40]   Le 61.8134 (62.9413)    Time 0.311 (0.000)
+Images: 1000, Captions: 5000
+>> shard_xattn_t2i batch (7,39)
+calculate similarity time: 797.993185043
+rsum: 416.3
+Average i2t Recall: 76.2
+Image to text: 57.7 81.7 89.3 1.0 7.6
+Average t2i Recall: 62.5
+Text to image: 41.6 68.5 77.6 2.0 17.9
+
